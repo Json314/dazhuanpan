@@ -5,170 +5,168 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+  <title>大转盘抽奖</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+      * {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+      }
 
-    .box {
-      position: relative;
-      width: 5.2rem;
-      height: 5.2rem;
-      margin: 0 auto;
-      border: 0.1rem solid #E44035;
-      border-radius: 50%;
-      transition: transform 3s cubic-bezier(0, .51, .28, 1.01);
-      overflow: hidden;
-    }
+      .box {
+          position: relative;
+          width: 5.2rem;
+          height: 5.2rem;
+          margin: 0 auto;
+          border: 0.1rem solid #E44035;
+          border-radius: 50%;
+          transition: transform 3s cubic-bezier(0, .51, .28, 1.01);
+          overflow: hidden;
+      }
 
-    .item {
-      position: absolute;
-      top: 0;
-      width: 100%;
-      margin: 0 auto;
-      height: 50%;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: center;
-      transform-origin: 50% 100%;
-      transform: rotate(60deg);
-    }
+      .item {
+          position: absolute;
+          top: 0;
+          width: 100%;
+          margin: 0 auto;
+          height: 50%;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: center;
+          transform-origin: 50% 100%;
+          transform: rotate(60deg);
+      }
 
-    .bg-item {
-      position: absolute;
-      left: 0;
-      width: 50%;
-      height: 50%;
-      transform-origin: 100% 100%;
-    }
-    .bg-item-0 {
-      background-color: #fff;
-    }
-    .bg-item-1 {
-      background-color: #ffddcb;
-    }
+      .bg-item {
+          position: absolute;
+          left: 0;
+          width: 50%;
+          height: 50%;
+          transform-origin: 100% 100%;
+      }
+      .bg-item-0 {
+          background-color: #fff;
+      }
+      .bg-item-1 {
+          background-color: #ffddcb;
+      }
 
-    .title {
-      margin-top: 0.25rem;
-      font-size: 0.2rem;
-      color: #333;
-    }
+      .title {
+          margin-top: 0.25rem;
+          font-size: 0.2rem;
+          color: #333;
+      }
 
-    .icon {
-      width: 25%;
-      margin-top: 0.2rem;
-    }
+      .icon {
+          width: 25%;
+          margin-top: 0.2rem;
+      }
 
-    .btn {
-      position: absolute;
-      top: 2.6rem;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 1rem;
-      height: 1rem;
-      line-height: 1rem;
-      font-size: 0.3rem;
-      font-weight: 600;
-      color: #ff9f00;
-      background-color: #E44025;
-      outline: none;
-      border: none;
-      border-radius: 50%;
-    }
-
+      .btn {
+          position: absolute;
+          top: 2.6rem;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 1rem;
+          height: 1rem;
+          line-height: 1rem;
+          font-size: 0.3rem;
+          font-weight: 600;
+          color: #ff9f00;
+          background-color: #E44025;
+          outline: none;
+          border: none;
+          border-radius: 50%;
+      }
   </style>
   <script type="text/javascript">
-    ;
-    (function() {
-        let resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
-        recalc = function() {
-          let docEl = document.documentElement,
-              clientWidth = docEl.clientWidth || window.screen.clientWidth || document.body.clientWidth;
-          docEl.style.fontSize = 100 * (clientWidth / 750) + 'px';
-        };
-      recalc();
-      if (!document.addEventListener) return;
-      window.addEventListener(resizeEvt, recalc, false);
-      document.addEventListener('DOMContentLoaded', recalc, false);
-    })();
+      ;
+      (function() {
+          let resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+          recalc = function() {
+              let docEl = document.documentElement,
+                  clientWidth = docEl.clientWidth || window.screen.clientWidth || document.body.clientWidth;
+              docEl.style.fontSize = 100 * (clientWidth / 750) + 'px';
+          };
+        recalc();
+        if (!document.addEventListener) return;
+        window.addEventListener(resizeEvt, recalc, false);
+        document.addEventListener('DOMContentLoaded', recalc, false);
+      })();
   </script>
 </head>
 
 <body>
 
-  <div class="main">
-    <div class="box">
-      <div class="bg-box"></div>
-      <div class="prizes-list">
-        <div class="item">
-          <span class="title">看点</span>
-          <img class="icon" src="./img/dalibao.png" alt="">
+    <div class="main">
+        <div class="box">
+            <div class="bg-box"></div>
+            <div class="prizes-list">
+              <div class="item">
+                <span class="title">看点</span>
+                <img class="icon" src="./img/dalibao.png" alt="">
+              </div>
+            </div>
         </div>
-      </div>
-
+        <button class="btn">抽奖</button>
     </div>
-    <button class="btn">抽奖</button>
-  </div>
 
   <script>
-    let arr = [
-      { title: '看点 1' },
-      { title: '优惠券 1' },
-      { title: '满减券 1' },
-      { title: '大礼包 1' },
-      { title: '看点 2' },
-      { title: '优惠券 2' },
-      { title: '满减券 1' },
-      { title: '大礼包 1' },
-    ];
-    let str = '',
-        bgStr = '';
-    let prizeList = arr.map((item, index) => {
-      let baseAngle = 360 / arr.length,
-          angle = baseAngle * index;
-      /*
-      * 图片在页面中初始旋转的角度为：360 / length * 第几张图片
-      * 图片在抽奖时，旋转到 0 的位置需要转的角度为：360 - 初始旋转的角度
-      */
-      str += `
-        <div class="item" style="transform: rotate(${angle}deg);">
-          <span class="title">${item.title}</span>
-          <img class="icon" src="./img/dalibao.png" alt="奖品图片" />
-        </div>
-      `;
-      /*
-      * 奖品坑位背景：1. 所有矩形位置为0，0，width和 height都为50%，transform-origin为右下角100%，100%；
-      *              2. 将矩形旋转至矩形的右边和奖品的右边重叠，然后设置skewY变形矩形，让矩形的左边和奖品的左边重叠；
-      */
-      bgStr += `
-        <div class="bg-item bg-item-${index % 2}" style="transform: rotate(${baseAngle*(index+0.5)}deg) skewY(${90-baseAngle}deg)"></div>
-      `;
-      return {
-        ...item,
-        angle: baseAngle ? 360 - baseAngle * index : 0
-      }
-    });
-    document.querySelector('.prizes-list').innerHTML = str;
-    document.querySelector('.bg-box').innerHTML = bgStr;
+      let arr = [
+          { title: '看点 1' },
+          { title: '优惠券 1' },
+          { title: '满减券 1' },
+          { title: '大礼包 1' },
+          { title: '看点 2' },
+          { title: '优惠券 2' },
+          { title: '满减券 1' },
+          { title: '大礼包 1' },
+      ];
+      let str = '',
+          bgStr = '';
+      let prizeList = arr.map((item, index) => {
+          let baseAngle = 360 / arr.length,
+              angle = baseAngle * index;
+          /*
+          * 图片在页面中初始旋转的角度为：360 / length * 第几张图片
+          * 图片在抽奖时，旋转到 0 的位置需要转的角度为：360 - 初始旋转的角度
+          */
+          str += `
+              <div class="item" style="transform: rotate(${angle}deg);">
+                <span class="title">${item.title}</span>
+                <img class="icon" src="./img/dalibao.png" alt="奖品图片" />
+              </div>
+          `;
+          /*
+          * 奖品坑位背景：1. 所有矩形位置为0，0，width和 height都为50%，transform-origin为右下角100%，100%；
+          *              2. 将矩形旋转至矩形的右边和奖品的右边重叠，然后设置skewY变形矩形，让矩形的左边和奖品的左边重叠；
+          */
+          bgStr += `
+              <div class="bg-item bg-item-${index % 2}" style="transform: rotate(${baseAngle*(index+0.5)}deg) skewY(${90-baseAngle}deg)"></div>
+          `;
+          return {
+              ...item,
+              angle: baseAngle ? 360 - baseAngle * index : 0
+          }
+      });
+      document.querySelector('.prizes-list').innerHTML = str;
+      document.querySelector('.bg-box').innerHTML = bgStr;
 
-    let lastAngle = 0;
-    document.querySelector('.btn').addEventListener('click', () => {
-      console.log('开始抽奖---');
-      let prize = prizeList[Math.floor(Math.random() * arr.length)];      // 奖品
-      let circle = Math.floor(Math.random() * 5 + 5);                     // 随机转动的圈数
-      let random = circle * 360 + prize.angle + lastAngle;                // 转动的角度 = 圈数 * 360 + 奖品的角度 + 上次转的角度
+      let lastAngle = 0;
+      document.querySelector('.btn').addEventListener('click', () => {
+          console.log('开始抽奖---');
+          let prize = prizeList[Math.floor(Math.random() * arr.length)];      // 奖品
+          let circle = Math.floor(Math.random() * 5 + 5);                     // 随机转动的圈数
+          let random = circle * 360 + prize.angle + lastAngle;                // 转动的角度 = 圈数 * 360 + 奖品的角度 + 上次转的角度
 
-      lastAngle += circle * 360;
+          lastAngle += circle * 360;
 
-      console.log('奖品是：', prize.title);
-      console.log('转的度数---', random);
-      console.log('记录本次转的度数---', lastAngle);
-      document.querySelector('.box').style = 'transform: rotate(' + random + 'deg)';
-    });
+          console.log('奖品是：', prize.title);
+          console.log('转的度数---', random);
+          console.log('记录本次转的度数---', lastAngle);
+          document.querySelector('.box').style = 'transform: rotate(' + random + 'deg)';
+      });
 
   </script>
 
