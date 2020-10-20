@@ -51,6 +51,14 @@
       .bg-item-1 {
           background-color: #ffddcb;
       }
+      .bg-item-2 {
+          background-color: #faa;
+      }
+
+      .border-item {
+          border-right: 1px solid #E44035;
+          border-bottom: 1px solid #E44035;
+      }
 
       .title {
           margin-top: 0.25rem;
@@ -68,9 +76,9 @@
           top: 2.6rem;
           left: 50%;
           transform: translate(-50%, -50%);
-          width: 1rem;
-          height: 1rem;
-          line-height: 1rem;
+          width: 1.2rem;
+          height: 1.2rem;
+          line-height: 1.2rem;
           font-size: 0.3rem;
           font-weight: 600;
           color: #ff9f00;
@@ -104,57 +112,86 @@
             <div class="bg-box"></div>
             <div class="prizes-list">
               <div class="item">
-                <span class="title">看点</span>
-                <img class="icon" src="./img/dalibao.png" alt="">
+                  <span class="title">看点</span>
+                  <img class="icon" src="./img/dalibao.png" alt="">
               </div>
             </div>
         </div>
-        <button class="btn">抽奖</button>
+        <button class="btn lottering">抽奖</button>
     </div>
 
   <script>
       let arr = [
-          { title: '看点 1' },
-          { title: '优惠券 1' },
-          { title: '满减券 1' },
-          { title: '大礼包 1' },
-          { title: '看点 2' },
-          { title: '优惠券 2' },
-          { title: '满减券 1' },
-          { title: '大礼包 1' },
-      ];
-      let str = '',
-          bgStr = '';
+              { title: '看点 10' },
+              { title: '优惠券 10' },
+              { title: '满减券 10' },
+              { title: '大礼包 10' },
+              { title: '看点 20' },
+              { title: '优惠券 20' },
+              { title: '满减券 20' },
+              { title: '大礼包 20' },
+          ],
+          str = '',
+          bgStr = '',
+          num = arr.length % 2 ? (arr.length % 3 ? 1 : 3) : 2;              // 用来设置坑位背景色，隔几个循环一组颜色
+
       let prizeList = arr.map((item, index) => {
-          let baseAngle = 360 / arr.length,
-              angle = baseAngle * index;
+          let baseAngle = 360 / arr.length,                                 // 每个坑位自身占的角度
+              angle = baseAngle * index,                                    // 每个坑位初始位置需要旋转的角度，开始是0°，需要每次递增 baseAngle，均分360°；旋转到 0°中奖的位置，需要再旋转360 - angle，也就是转满整圈
+              transform = `
+                  transform: rotate(${angle}deg);
+                  -ms-transform: rotate(${angle}deg);
+                  -moz-transform: rotate(${angle}deg);
+                  -webkit-transform: rotate(${angle}deg);
+                  -o-transform: rotate(${angle}deg);
+              `;
           /*
           * 图片在页面中初始旋转的角度为：360 / length * 第几张图片
           * 图片在抽奖时，旋转到 0 的位置需要转的角度为：360 - 初始旋转的角度
           */
           str += `
-              <div class="item" style="transform: rotate(${angle}deg);">
-                <span class="title">${item.title}</span>
-                <img class="icon" src="./img/dalibao.png" alt="奖品图片" />
+              <div class="item" style="${transform}">
+                  <span class="title">${item.title}</span>
+                  <img class="icon" src="./img/dalibao.png" alt="奖品图片" />
               </div>
           `;
+
           /*
           * 奖品坑位背景：1. 所有矩形位置为0，0，width和 height都为50%，transform-origin为右下角100%，100%；
           *              2. 将矩形旋转至矩形的右边和奖品的右边重叠，然后设置skewY变形矩形，让矩形的左边和奖品的左边重叠；
           */
+          let bgRotateAngle = baseAngle * (index + 0.5),
+              bgSkewAngle = 90 - baseAngle,
+              bgTransform = `
+                  transform: rotate(${bgRotateAngle}deg) skewY(${bgSkewAngle}deg);
+                  -ms-transform: rotate(${bgRotateAngle}deg) skewY(${bgSkewAngle}deg);
+                  -moz-transform: rotate(${bgRotateAngle}deg) skewY(${bgSkewAngle}deg);
+                  -webkit-transform: rotate(${bgRotateAngle}deg) skewY(${bgSkewAngle}deg);
+                  -o-transform: rotate(${bgRotateAngle}deg) skewY(${bgSkewAngle}deg);
+              `;
           bgStr += `
-              <div class="bg-item bg-item-${index % 2}" style="transform: rotate(${baseAngle*(index+0.5)}deg) skewY(${90-baseAngle}deg)"></div>
+              <div class="bg-item bg-item-${index % num} ${num === 1 && 'border-item'}" style="${bgTransform}"></div>
           `;
+
           return {
               ...item,
-              angle: baseAngle ? 360 - baseAngle * index : 0
+              angle: 360 - angle
           }
       });
       document.querySelector('.prizes-list').innerHTML = str;
       document.querySelector('.bg-box').innerHTML = bgStr;
 
-      let lastAngle = 0;
+      let lastAngle = 0;                                                      // 记录上次转动的角度，每次旋转是在上次转动的基础上再转指定的度数
+      let lottering = false;                                                  // 是否正在抽奖，防止连点
       document.querySelector('.btn').addEventListener('click', () => {
+          startLottering();                      // 开始抽奖
+      });
+
+      /******   开始抽奖    ******/
+      function startLottering() {
+          document.querySelector('.lottering').innerHTML = '抽奖中';
+          if (lottering) return false;
+          lottering = true;
           console.log('开始抽奖---');
           let prize = prizeList[Math.floor(Math.random() * arr.length)];      // 奖品
           let circle = Math.floor(Math.random() * 5 + 5);                     // 随机转动的圈数
@@ -165,8 +202,22 @@
           console.log('奖品是：', prize.title);
           console.log('转的度数---', random);
           console.log('记录本次转的度数---', lastAngle);
-          document.querySelector('.box').style = 'transform: rotate(' + random + 'deg)';
-      });
+          let transform = `
+              transform: rotate(${random}deg);
+              -ms-transform: rotate(${random}deg);
+              -moz-transform: rotate(${random}deg);
+              -webkit-transform: rotate(${random}deg);
+              -o-transform: rotate(${random}deg);
+          `;
+          document.querySelector('.box').style = transform;                    // 外层容器开始转动抽奖
+
+          let timer = setTimeout(() => {
+              lottering = false;
+              document.querySelector('.lottering').innerHTML = '抽奖';
+              clearTimeout(timer);
+              timer = null;
+          }, 3000);
+      }
 
   </script>
 
